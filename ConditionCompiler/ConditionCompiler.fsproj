@@ -1,12 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>ConditionCompiler</Title>
+    <PackageId>phu.ConditionCompiler</PackageId>
+    <Authors>Peder Husom</Authors>
+    <PackageVersion>1.0.0</PackageVersion>
+    <PackageLicenseUrl>https://github.com/espenrl/RavenDB.Analyzer/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/hayer/ConditionCompiler</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/hayer/ConditionCompiler.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Copyright>Peder Husom</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Program.fs" />
+    <Compile Include="Types.fs" />
+    <Compile Include="Parser.fs" />
+    <Compile Include="Compiler.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FParsec" Version="1.0.3" />
   </ItemGroup>
 
 </Project>
