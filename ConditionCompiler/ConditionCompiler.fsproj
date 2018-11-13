@@ -11,8 +11,7 @@
     <Title>ConditionCompiler</Title>
     <PackageId>phu.ConditionCompiler</PackageId>
     <Authors>Peder Husom</Authors>
-    <PackageVersion>1.0.0</PackageVersion>
-    <PackageLicenseUrl>https://github.com/espenrl/RavenDB.Analyzer/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/hayer/ConditionCompiler/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/hayer/ConditionCompiler</PackageProjectUrl>
     <RepositoryUrl>https://github.com/hayer/ConditionCompiler.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -27,6 +26,10 @@
 
   <ItemGroup>
     <PackageReference Include="FParsec" Version="1.0.3" />
+    <PackageReference Include="GitVersionTask" Version="4.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
