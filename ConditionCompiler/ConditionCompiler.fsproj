@@ -18,6 +18,18 @@
     <Copyright>Peder Husom</Copyright>
   </PropertyGroup>
 
+  <!-- GitVersion -->
+  <PropertyGroup>
+    <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
+    <UpdateAssemblyInfo>true</UpdateAssemblyInfo>
+    <UpdateVersionProperties>true</UpdateVersionProperties>
+    <!-- disable default SDK versioning -->
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+  </PropertyGroup>
+
+  <!-- compile, f# so order matters -->
   <ItemGroup>
     <Compile Include="Types.fs" />
     <Compile Include="Parser.fs" />

@@ -56,7 +56,13 @@ let ``String is equal to string`` () =
 [<Fact>]
 let ``Variable is equal number && variable1 is equal string`` () =
     let condition1 = "NR100 = 100 && HelloStr = \"Hello world\""        |> ConditionCompiler.Parser.Parse |> compiler |> compile
-    let condition2 = "NR100 <> 010 && HelloStr <> \"Not Hello world\""    |> ConditionCompiler.Parser.Parse |> compiler |> compile
+    let condition2 = "NR100 <> 010 && HelloStr <> \"Not Hello world\""  |> ConditionCompiler.Parser.Parse |> compiler |> compile
 
     Assert.True(condition1.DynamicInvoke(dataBag) :?> bool)
     Assert.True(condition2.DynamicInvoke(dataBag) :?> bool)
+
+[<Fact>]
+let ``Number in number array`` () =
+    let condition1 = "10 = [1; 40; 10; 30]" |> ConditionCompiler.Parser.Parse |> compiler |> compile
+
+    Assert.True(condition1.DynamicInvoke(dataBag) :?> bool)

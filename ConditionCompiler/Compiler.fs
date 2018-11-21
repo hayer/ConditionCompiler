@@ -1,6 +1,7 @@
 ﻿namespace ConditionCompiler
 
 module Compiler = 
+    open System.Linq.Expressions
 
     /// <summary>
     /// Set up a compiler to use for compiling conditions.
