@@ -11,9 +11,6 @@ module Compiler =
     let CreateCompiler dataBagType getDataMethodInfo =
         let dbparam = System.Linq.Expressions.Expression.Parameter(dataBagType, "dataBagParameter")
 
-        // let classType = Type.GetType("Tests+StaticDataBagClass")
-        // let methodInfo = classType.GetMethod("GetDataBagValue")
-
         let valueType = typeof<Types.Value>
         let arrayContainsMethodInfo = valueType.GetMethods() |> Array.find (fun l -> l.Name.Equals("ArrayContains"))
 
