@@ -5,7 +5,17 @@ open FParsec
 module Parser = 
     type Identifier = string
     type LogicalOperator = And | Or
-    type ComparisonOperator = Equal | NotEqual | LessThan | GreaterThan | LessThanOrEqual | GreaterThanOrEqual | In
+    type ComparisonOperator =
+        | Equal 
+        | NotEqual 
+        | LessThan 
+        | GreaterThan 
+        | LessThanOrEqual 
+        | GreaterThanOrEqual 
+        | In
+        | StartsWith
+        | EndsWith
+        | Contains
 
     type Expression = 
         | Literal of Types.Value
@@ -73,6 +83,9 @@ module Parser =
     let private termc = (pvalue .>> ws) <|> tryBetweenParens pcomparison
     oppc.TermParser <- termc
     oppc.AddOperator(InfixOperator("IN", ws, 1,  Assoc.Left, fun x y -> Comparison(x, In, y)))
+    oppc.AddOperator(InfixOperator("~=~", ws, 1,  Assoc.Left, fun x y -> Comparison(x, Contains, y)))
+    oppc.AddOperator(InfixOperator("~=", ws, 1,  Assoc.Left, fun x y -> Comparison(x, EndsWith, y)))
+    oppc.AddOperator(InfixOperator("=~", ws, 1,  Assoc.Left, fun x y -> Comparison(x, StartsWith, y)))
     oppc.AddOperator(InfixOperator("=",  ws, 1,  Assoc.Left, fun x y -> Comparison(x, Equal, y)))
     oppc.AddOperator(InfixOperator("<>", ws, 1,  Assoc.Left, fun x y -> Comparison(x, NotEqual, y)))
     oppc.AddOperator(InfixOperator("<=", ws, 1,  Assoc.Left, fun x y -> Comparison(x, LessThanOrEqual, y)))

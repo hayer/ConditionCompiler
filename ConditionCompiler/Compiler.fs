@@ -12,7 +12,10 @@ module Compiler =
         let dbparam = System.Linq.Expressions.Expression.Parameter(dataBagType, "dataBagParameter")
 
         let valueType = typeof<Types.Value>
-        let arrayContainsMethodInfo = valueType.GetMethods() |> Array.find (fun l -> l.Name.Equals("ArrayContains"))
+        let arrayContainsMethodInfo =    valueType.GetMethods() |> Array.find (fun l -> l.Name.Equals("ArrayContains"))
+        let stringStartsWithMethodInfo = valueType.GetMethods() |> Array.find (fun l -> l.Name.Equals("StartsWith"))
+        let stringEndsWithMethodInfo =   valueType.GetMethods() |> Array.find (fun l -> l.Name.Equals("EndsWith"))
+        let stringContainsMethodInfo =   valueType.GetMethods() |> Array.find (fun l -> l.Name.Equals("Contains"))
 
         let rec CreateLambdaExpression' dataBagParameter expression = 
             match expression with
@@ -22,10 +25,13 @@ module Compiler =
                 let rightHandCompiled = rightHandExpression |> CreateLambdaExpression' dataBagParameter
                 
                 (match comparisonOperator with
-                | Parser.In -> System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Call(arrayContainsMethodInfo, [| leftHandCompiled; rightHandCompiled |]), System.Linq.Expressions.Expression.Constant(true))
-                | Parser.Equal -> System.Linq.Expressions.Expression.Equal(leftHandCompiled, rightHandCompiled)
-                | Parser.NotEqual -> System.Linq.Expressions.Expression.NotEqual(leftHandCompiled, rightHandCompiled)
-                | Parser.LessThan -> System.Linq.Expressions.Expression.LessThan(leftHandCompiled, rightHandCompiled)
+                | Parser.Contains   -> System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Call(stringContainsMethodInfo,   [| leftHandCompiled; rightHandCompiled |]), System.Linq.Expressions.Expression.Constant(true))
+                | Parser.EndsWith   -> System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Call(stringEndsWithMethodInfo,   [| leftHandCompiled; rightHandCompiled |]), System.Linq.Expressions.Expression.Constant(true))
+                | Parser.StartsWith -> System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Call(stringStartsWithMethodInfo, [| leftHandCompiled; rightHandCompiled |]), System.Linq.Expressions.Expression.Constant(true))
+                | Parser.In         -> System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Call(arrayContainsMethodInfo,    [| leftHandCompiled; rightHandCompiled |]), System.Linq.Expressions.Expression.Constant(true))
+                | Parser.Equal      -> System.Linq.Expressions.Expression.Equal(leftHandCompiled, rightHandCompiled)
+                | Parser.NotEqual   -> System.Linq.Expressions.Expression.NotEqual(leftHandCompiled, rightHandCompiled)
+                | Parser.LessThan   -> System.Linq.Expressions.Expression.LessThan(leftHandCompiled, rightHandCompiled)
                 | Parser.GreaterThan -> System.Linq.Expressions.Expression.GreaterThan(leftHandCompiled, rightHandCompiled)
                 | Parser.LessThanOrEqual -> System.Linq.Expressions.Expression.LessThanOrEqual(leftHandCompiled, rightHandCompiled)
                 | Parser.GreaterThanOrEqual -> System.Linq.Expressions.Expression.GreaterThanOrEqual(leftHandCompiled, rightHandCompiled)) :> System.Linq.Expressions.Expression

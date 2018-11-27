@@ -14,6 +14,24 @@ module Types =
             | String s1, StringArray sa2 -> sa2 |> Array.exists(fun q -> q.Equals(s1, System.StringComparison.OrdinalIgnoreCase))
             | _ -> failwith "Unsupported operation"
 
+        static member StartsWith (v1:Value, v2:Value) =
+            match v1, v2 with
+            | String s1, String s2 -> s2.StartsWith(s1, System.StringComparison.OrdinalIgnoreCase)
+            | String s1, StringArray sa2 -> sa2 |> Array.exists(fun q -> q.StartsWith(s1, System.StringComparison.OrdinalIgnoreCase))
+            | _ -> failwith "Unsupported operation"
+
+        static member EndsWith (v1:Value, v2:Value) =
+            match v1, v2 with
+            | String s1, String s2 -> s2.EndsWith(s1, System.StringComparison.OrdinalIgnoreCase)
+            | String s1, StringArray sa2 -> sa2 |> Array.exists(fun q -> q.EndsWith(s1, System.StringComparison.OrdinalIgnoreCase))
+            | _ -> failwith "Unsupported operation"
+
+        static member Contains (v1:Value, v2:Value) =
+            match v1, v2 with
+            | String s1, String s2 -> s2.IndexOf(s1, System.StringComparison.OrdinalIgnoreCase) > -1
+            | String s1, StringArray sa2 -> sa2 |> Array.exists(fun q -> q.IndexOf(s1, System.StringComparison.OrdinalIgnoreCase) > -1)
+            | _ -> failwith "Unsupported operation"
+
         static member op_Equality (v1:Value, v2:Value) =
             match v1, v2 with
             | Number n1, Number n2 -> n1 = n2

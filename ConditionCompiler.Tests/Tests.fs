@@ -78,3 +78,36 @@ let ``Number in number array`` () =
 
     Assert.True(condition1.DynamicInvoke(dataBag) :?> bool)
     Assert.True(condition2.DynamicInvoke(dataBag) :?> bool)
+
+[<Fact>]
+let ``String starts with`` () =
+    let condition1 = "\"Hei\" =~ \"Hei verden\"" |> ConditionCompiler.Parser.Parse |> compiler |> compile
+    let condition2 = "HelloStr =~ \"HellO WoRLd this is ME\"" |> ConditionCompiler.Parser.Parse |> compiler |> compile
+
+    Assert.True(condition1.DynamicInvoke(dataBag) :?> bool)
+    Assert.True(condition2.DynamicInvoke(dataBag) :?> bool)
+
+[<Fact>]
+let ``String starts with one or more in array`` () =
+    let condition1 = "\"Hei\" =~ [\"asdf\"; \"Nein\"; \"Hei verd\"; \"Might be\"]" |> ConditionCompiler.Parser.Parse |> compiler |> compile
+    let condition2 = "HelloStr =~ [\"asdf\"; \"Hello world, its me CompilerError\"; \"Not hello world\"; \"Might be\"]" |> ConditionCompiler.Parser.Parse |> compiler |> compile
+    
+    Assert.True(condition1.DynamicInvoke(dataBag) :?> bool)
+    Assert.True(condition2.DynamicInvoke(dataBag) :?> bool)
+
+
+[<Fact>]
+let ``String ends with one or more in array`` () =
+    let condition1 = "\"VERD\" ~= [\"asdf\"; \"Nein\"; \"Hei verd\"; \"Might be\"]" |> ConditionCompiler.Parser.Parse |> compiler |> compile
+    let condition2 = "HelloStr ~= [\"asdf\"; \"Hello world, its me CompilerError\"; \"Not hello world\"; \"Might be\"]" |> ConditionCompiler.Parser.Parse |> compiler |> compile
+    
+    Assert.True(condition1.DynamicInvoke(dataBag) :?> bool)
+    Assert.True(condition2.DynamicInvoke(dataBag) :?> bool)
+
+[<Fact>]
+let ``String contains string`` () =
+    let condition1 = "\"Word\" ~=~ \"Hello there Mr. Word, are you OK?\"" |> ConditionCompiler.Parser.Parse |> compiler |> compile
+    let condition2 = "\"Word\" ~=~ [\"1Excel2\"; \"..3Word..4\"; \"9PaintASD\"]" |> ConditionCompiler.Parser.Parse |> compiler |> compile
+
+    Assert.True(condition1.DynamicInvoke(dataBag) :?> bool)
+    Assert.True(condition2.DynamicInvoke(dataBag) :?> bool)
