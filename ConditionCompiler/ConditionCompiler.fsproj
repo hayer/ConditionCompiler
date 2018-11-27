@@ -18,6 +18,19 @@
     <Copyright>Peder Husom</Copyright>
   </PropertyGroup>
 
+  <!-- GitVersion -->
+  <PropertyGroup>
+    <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
+    <UpdateAssemblyInfo>false</UpdateAssemblyInfo>
+    <UpdateVersionProperties>true</UpdateVersionProperties>
+    <UpdateInformationalVersion>false</UpdateInformationalVersion>
+    <!-- disable default SDK versioning -->
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+  </PropertyGroup>
+
+  <!-- compile, f# so order matters -->
   <ItemGroup>
     <Compile Include="Types.fs" />
     <Compile Include="Parser.fs" />
@@ -26,7 +39,7 @@
 
   <ItemGroup>
     <PackageReference Include="FParsec" Version="1.0.3" />
-    <PackageReference Include="GitVersionTask" Version="4.0.0">
+    <PackageReference Include="GitVersionTask" Version="4.0.1-beta1-47">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
