@@ -22,11 +22,12 @@
   <PropertyGroup>
     <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
     <UpdateAssemblyInfo>false</UpdateAssemblyInfo>
-    <UpdateVersionProperties>false</UpdateVersionProperties>
+    <UpdateVersionProperties>true</UpdateVersionProperties>
+    <UpdateInformationalVersion>false</UpdateInformationalVersion>
     <!-- disable default SDK versioning -->
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <GenerateAssemblyInformationalVersionAttribute>true</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
 
   <!-- compile, f# so order matters -->
