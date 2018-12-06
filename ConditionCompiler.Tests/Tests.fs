@@ -33,6 +33,8 @@ let ``Number is equal to double`` () =
     let numberCondition3 = "NR150_0 = NR150_0"  |> ConditionCompiler.Parser.Parse |> compiler |> compile
     let numberCondition4 = "NR150_0 = NR150_1"  |> ConditionCompiler.Parser.Parse |> compiler |> compile
     let numberCondition5 = "NR150_1 <> NR100"   |> ConditionCompiler.Parser.Parse |> compiler |> compile
+    let numberCondition6 = "!(NR150_1 = 100)"   |> ConditionCompiler.Parser.Parse |> compiler |> compile
+    let numberCondition7 = "!(NR150_1 <> 150)"   |> ConditionCompiler.Parser.Parse |> compiler |> compile
 
     Assert.True(numberCondition0.DynamicInvoke(dataBag) :?> bool)
     Assert.True(numberCondition1.DynamicInvoke(dataBag) :?> bool)
@@ -40,6 +42,8 @@ let ``Number is equal to double`` () =
     Assert.True(numberCondition3.DynamicInvoke(dataBag) :?> bool)
     Assert.True(numberCondition4.DynamicInvoke(dataBag) :?> bool)
     Assert.True(numberCondition5.DynamicInvoke(dataBag) :?> bool)
+    Assert.True(numberCondition6.DynamicInvoke(dataBag) :?> bool)
+    Assert.True(numberCondition7.DynamicInvoke(dataBag) :?> bool)
 
 
 [<Fact>]
