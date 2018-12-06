@@ -22,6 +22,7 @@ module Parser =
         | Var of Identifier
         | Comparison of Expression * ComparisonOperator * Expression
         | Logical of Expression * LogicalOperator * Expression
+        | Negate of Expression
     
 
     let private innerNumberLiteral =
@@ -99,8 +100,9 @@ module Parser =
     oppl.TermParser <- terml
     oppl.AddOperator(InfixOperator("&&", ws, 1, Assoc.Left, fun x y -> Logical(x, And, y)))
     oppl.AddOperator(InfixOperator("||", ws, 1, Assoc.Left, fun x y -> Logical(x, Or, y)))
+    //oppl.AddOperator(InfixOperator("!",  ws, 1, Assoc.None, fun x y -> failwith "T"))
+    oppl.AddOperator(PrefixOperator("!",  ws, 1, false, fun x -> Negate(x)))
 
-    let private ptest = between (str_ws "(") (str_ws ")") (sepBy plogical (str_ws "&&" <|> str_ws "||"))
     let private final = [plogical;pcomparison] |> List.map attempt |> choice .>> eof
 
     let Parse (program:string) =
