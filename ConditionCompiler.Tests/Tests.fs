@@ -16,6 +16,7 @@ dataBag.Add("NR150_0", ConditionCompiler.Types.Number 150.0)
 dataBag.Add("NR150_1", ConditionCompiler.Types.Number 150.0)
 dataBag.Add("NR100", ConditionCompiler.Types.Number 100.0)
 dataBag.Add("HelloStr", ConditionCompiler.Types.String "Hello world")
+dataBag.Add("Hello-Str", ConditionCompiler.Types.String "Hello world")
 
 // create the compiler
 let classType = Type.GetType("Tests+StaticDataBagClass")
@@ -35,6 +36,8 @@ let ``Number is equal to double`` () =
     let numberCondition5 = "NR150_1 <> NR100"   |> ConditionCompiler.Parser.Parse |> compiler |> compile
     let numberCondition6 = "!(NR150_1 = 100)"   |> ConditionCompiler.Parser.Parse |> compiler |> compile
     let numberCondition7 = "!(NR150_1 <> 150)"   |> ConditionCompiler.Parser.Parse |> compiler |> compile
+    let numberCondition8 = "1 = 1"   |> ConditionCompiler.Parser.Parse |> compiler |> compile
+    let numberCondition9 = "1 <> 1"   |> ConditionCompiler.Parser.Parse |> compiler |> compile
 
     Assert.True(numberCondition0.DynamicInvoke(dataBag) :?> bool)
     Assert.True(numberCondition1.DynamicInvoke(dataBag) :?> bool)
@@ -44,6 +47,8 @@ let ``Number is equal to double`` () =
     Assert.True(numberCondition5.DynamicInvoke(dataBag) :?> bool)
     Assert.True(numberCondition6.DynamicInvoke(dataBag) :?> bool)
     Assert.True(numberCondition7.DynamicInvoke(dataBag) :?> bool)
+    Assert.True(numberCondition8.DynamicInvoke(dataBag) :?> bool)
+    Assert.True(numberCondition9.DynamicInvoke(dataBag) :?> bool)
 
 
 [<Fact>]
@@ -51,10 +56,12 @@ let ``String is equal to string`` () =
     let stringCondition0 = "\"Hello world\" = HelloStr"        |> ConditionCompiler.Parser.Parse |> compiler |> compile
     let stringCondition1 = "HelloStr <> \"Not Hello world\""   |> ConditionCompiler.Parser.Parse |> compiler |> compile
     let stringCondition2 = "HelloStr = HelloStr"               |> ConditionCompiler.Parser.Parse |> compiler |> compile
+    let stringCondition3 = "Hello-Str = HelloStr"              |> ConditionCompiler.Parser.Parse |> compiler |> compile
 
     Assert.True(stringCondition0.DynamicInvoke(dataBag) :?> bool)
     Assert.True(stringCondition1.DynamicInvoke(dataBag) :?> bool)
     Assert.True(stringCondition2.DynamicInvoke(dataBag) :?> bool)
+    Assert.True(stringCondition3.DynamicInvoke(dataBag) :?> bool)
 
 
 [<Fact>]
