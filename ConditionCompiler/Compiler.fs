@@ -17,18 +17,22 @@ module Compiler =
         let stringEndsWithMethodInfo =   valueType.GetMethods() |> Array.find (fun l -> l.Name.Equals("EndsWith"))
         let stringContainsMethodInfo =   valueType.GetMethods() |> Array.find (fun l -> l.Name.Equals("Contains"))
 
+        let trueConstantExpression = System.Linq.Expressions.Expression.Constant(true)
+        let falseConstantExpression = System.Linq.Expressions.Expression.Constant(false)
+
         let rec CreateLambdaExpression' dataBagParameter expression = 
             match expression with
             | Parser.Expression.Literal value -> System.Linq.Expressions.Expression.Constant(value) :> System.Linq.Expressions.Expression
+            | Parser.Expression.Negate innerExpr -> System.Linq.Expressions.Expression.Equal(innerExpr |> CreateLambdaExpression' dataBagParameter, falseConstantExpression) :> System.Linq.Expressions.Expression
             | Parser.Expression.Comparison(leftHandExpression, comparisonOperator, rightHandExpression) ->
                 let leftHandCompiled = leftHandExpression |> CreateLambdaExpression' dataBagParameter
                 let rightHandCompiled = rightHandExpression |> CreateLambdaExpression' dataBagParameter
                 
                 (match comparisonOperator with
-                | Parser.Contains   -> System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Call(stringContainsMethodInfo,   [| leftHandCompiled; rightHandCompiled |]), System.Linq.Expressions.Expression.Constant(true))
-                | Parser.EndsWith   -> System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Call(stringEndsWithMethodInfo,   [| leftHandCompiled; rightHandCompiled |]), System.Linq.Expressions.Expression.Constant(true))
-                | Parser.StartsWith -> System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Call(stringStartsWithMethodInfo, [| leftHandCompiled; rightHandCompiled |]), System.Linq.Expressions.Expression.Constant(true))
-                | Parser.In         -> System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Call(arrayContainsMethodInfo,    [| leftHandCompiled; rightHandCompiled |]), System.Linq.Expressions.Expression.Constant(true))
+                | Parser.Contains   -> System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Call(stringContainsMethodInfo,   [| leftHandCompiled; rightHandCompiled |]), trueConstantExpression)
+                | Parser.EndsWith   -> System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Call(stringEndsWithMethodInfo,   [| leftHandCompiled; rightHandCompiled |]), trueConstantExpression)
+                | Parser.StartsWith -> System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Call(stringStartsWithMethodInfo, [| leftHandCompiled; rightHandCompiled |]), trueConstantExpression)
+                | Parser.In         -> System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Call(arrayContainsMethodInfo,    [| leftHandCompiled; rightHandCompiled |]), trueConstantExpression)
                 | Parser.Equal      -> System.Linq.Expressions.Expression.Equal(leftHandCompiled, rightHandCompiled)
                 | Parser.NotEqual   -> System.Linq.Expressions.Expression.NotEqual(leftHandCompiled, rightHandCompiled)
                 | Parser.LessThan   -> System.Linq.Expressions.Expression.LessThan(leftHandCompiled, rightHandCompiled)
