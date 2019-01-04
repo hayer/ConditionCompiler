@@ -49,7 +49,7 @@ module Parser =
     
     let private pidentifier = 
         let isIdentifierFirstChar c = isLetter c || c = '_'
-        let isIdentifierChar c = isLetter c || isDigit c || c = '_'
+        let isIdentifierChar c = isLetter c || isDigit c || c = '_' || c = '-'
         many1Satisfy2L isIdentifierFirstChar isIdentifierChar "identifier"
     
     let private pidentifier_ws = pidentifier .>> ws
